@@ -10,8 +10,8 @@ COPY . /app
 # Install any needed dependencies
 RUN npm install
 
-# Make your app available on the required port (usually 3000 for Node apps)
+# Expose the port your app runs on (optional, but useful for Koyeb)
 EXPOSE 3000
 
-# Run the app
+# Define the command to run your app
 CMD ["npm", "start"]
