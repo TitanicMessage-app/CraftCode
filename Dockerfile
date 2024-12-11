@@ -24,10 +24,10 @@ COPY package*.json ./
 
 # Use npm cache to avoid re-installing packages if not needed
 RUN npm cache clean --force && \
-    npm install --legacy-peer-deps # Use this flag if there are peer dependency conflicts
+    npm install --legacy-peer-deps
 
 # Install missing dependencies like express-http-proxy
-RUN npm install express-http-proxy canvas
+RUN npm install express-http-proxy canvas --legacy-peer-deps
 
 # Copy all application files
 COPY . .
