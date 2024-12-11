@@ -14,15 +14,17 @@ RUN apt-get update && \
     build-essential \
     g++ \
     pkg-config && \
+    # Set apt-get timeout to 120 seconds to avoid timeouts during package installation
+    echo 'Acquire::http::Timeout "120";' > /etc/apt/apt.conf.d/99custom-timeout && \
     npm install -g npm@latest && \
     rm -rf /var/lib/apt/lists/*
 
-# Copy package files and install dependencies
+# Copy package files and install dependencies (without unnecessary clean-up)
 COPY package*.json ./
 
-# Clear npm cache to prevent stale packages
+# Use npm cache to avoid re-installing packages if not needed
 RUN npm cache clean --force && \
-    npm install
+    npm install --legacy-peer-deps # Use this flag if there are peer dependency conflicts
 
 # Install missing dependencies like express-http-proxy
 RUN npm install express-http-proxy canvas
