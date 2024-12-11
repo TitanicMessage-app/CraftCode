@@ -1,9 +1,6 @@
 # Use an official Node.js runtime as a parent image
 FROM node:18
 
-# Set the working directory in the container
-WORKDIR /app
-
 # Install system dependencies and set npm to the latest version
 RUN apt-get update && \
     apt-get install -y \
@@ -24,8 +21,8 @@ RUN npm install --legacy-peer-deps
 # Copy all application files
 COPY . .
 
-# Ensure the correct files are in place
-RUN ls -R /app
+# Verify all files are copied
+RUN ls -R .
 
 # Build the project (if required)
 RUN npm run build
@@ -33,5 +30,5 @@ RUN npm run build
 # Expose the port the app runs on
 EXPOSE 3000
 
-# Set the command to start the application using the correct absolute path
-CMD ["node", "/dev-server/index.js"]
+# Set the command to start the application
+CMD ["node", "./dev-server/index.js"]
