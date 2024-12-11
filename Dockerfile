@@ -24,7 +24,7 @@ RUN npm install --legacy-peer-deps
 # Copy all application files
 COPY . .
 
-# Verify all files are copied
+# Ensure the correct files are in place
 RUN ls -R /app
 
 # Build the project (if required)
@@ -33,5 +33,5 @@ RUN npm run build
 # Expose the port the app runs on
 EXPOSE 3000
 
-# Set the command to start the application
-CMD ["node", "./dev-server/index.js"]
+# Set the command to start the application using the correct absolute path
+CMD ["node", "/dev-server/index.js"]
