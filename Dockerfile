@@ -4,7 +4,7 @@ FROM node:18
 # Set the working directory in the container
 WORKDIR /app
 
-# Install dependencies for canvas module (cairo, pixman, etc.)
+# Ensure npm is installed and usable, verify Node.js environment
 RUN apt-get update && \
     apt-get install -y \
     libcairo2-dev \
@@ -14,22 +14,27 @@ RUN apt-get update && \
     build-essential \
     g++ \
     pkg-config && \
+    npm install -g npm@latest && \
     rm -rf /var/lib/apt/lists/*
 
-# Clear npm cache and remove existing node_modules (if any)
-RUN npm cache clean --force
+# Copy package files and install dependencies
+COPY package*.json ./
 
-# Copy the current directory contents into the container at /app
-COPY . /app
+# Clear npm cache to prevent stale packages
+RUN npm cache clean --force && \
+    npm install
 
-# Install all dependencies from package.json
-RUN npm install
+# Install missing dependencies like express-http-proxy
+RUN npm install express-http-proxy canvas
 
-# Install express-http-proxy
-RUN npm install express-http-proxy
+# Copy all application files
+COPY . .
 
-# Expose the port your app runs on (optional, but useful for Koyeb)
+# Build the project (if required)
+RUN npm run build
+
+# Expose the port the app runs on
 EXPOSE 3000
 
-# Define the command to run your app
+# Define the command to run the app
 CMD ["npm", "start"]
