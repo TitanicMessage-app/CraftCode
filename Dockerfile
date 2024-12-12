@@ -22,7 +22,6 @@ COPY package*.json ./
 
 # Install node dependencies
 RUN npm install --legacy-peer-deps
-
 # Copy all application files
 COPY . .
 
@@ -31,6 +30,10 @@ RUN ls -R /app
 
 # Run npm audit fix to resolve vulnerabilities automatically
 RUN npm audit fix --force
+
+RUN npm run build
+
+RUN npm start
 
 # Run the translation process
 RUN npm run translate
