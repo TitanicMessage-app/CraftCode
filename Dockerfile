@@ -31,7 +31,7 @@ RUN ls -R /app
 # Run npm audit fix to resolve vulnerabilities automatically
 RUN npm audit fix --force
 
-RUN npm run build
+RUN npm run build --force
 
 RUN npm start
 
